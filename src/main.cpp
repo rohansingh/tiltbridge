@@ -101,5 +101,13 @@ void loop() {
     data_sender.process();
     lcd.check_screen();
     http_server.handleClient();
+
+#if defined(DEEP_SLEEP_INTERVAL_MILLIS) && defined(DEEP_SLEEP_DURATION_MILLIS)
+    if (xTaskGetTickCount() >= DEEP_SLEEP_INTERVAL_MILLIS) {
+        esp_sleep_enable_timer_wakeup(DEEP_SLEEP_DURATION_MILLIS * 1000);
+        esp_deep_sleep_start();
+    }
+#endif
+
     yield();
 }
