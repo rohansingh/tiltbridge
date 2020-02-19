@@ -94,3 +94,7 @@ fabric.properties
 
 docs/.build/html/
 docs/.build/doctrees/
+
+# PlatformIO
+.pio/
+.vscode/
