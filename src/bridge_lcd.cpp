@@ -38,8 +38,8 @@ void bridge_lcd::display_logo() {
 
 
 void bridge_lcd::check_screen() {
-    if(next_screen_at < xTaskGetTickCount()) {
-        next_screen_at = display_next() * 1000 + xTaskGetTickCount();
+    if(next_screen_at < millis()) {
+        next_screen_at = display_next() * 1000 + millis();
     }
 }
 

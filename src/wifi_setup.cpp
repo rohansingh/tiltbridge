@@ -122,7 +122,7 @@ void init_wifi() {
 // transportation between networks
 void IRAM_ATTR wifi_reset_pressed() {
     // When the reset button is pressed, just log the time & get back to work
-    wifi_reset_pressed_at = xTaskGetTickCount();
+    wifi_reset_pressed_at = millis();
 }
 
 void initWiFiResetButton() {
@@ -137,7 +137,7 @@ void initWiFiResetButton() {
 void handle_wifi_reset_presses() {
     uint64_t initial_press_at = 0;
 
-    if(wifi_reset_pressed_at > (xTaskGetTickCount() - WIFI_RESET_DOUBLE_PRESS_TIME) && wifi_reset_pressed_at > WIFI_RESET_DOUBLE_PRESS_TIME) {
+    if(wifi_reset_pressed_at > (millis() - WIFI_RESET_DOUBLE_PRESS_TIME) && wifi_reset_pressed_at > WIFI_RESET_DOUBLE_PRESS_TIME) {
         initial_press_at = wifi_reset_pressed_at; // Cache when the button was first pressed
         lcd.display_wifi_reset_screen();
         delay(WIFI_RESET_DOUBLE_PRESS_TIME); // Block while we let the user press a second time

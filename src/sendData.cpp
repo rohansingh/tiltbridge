@@ -342,7 +342,7 @@ void dataSendHandler::process() {
     // dataSendHandler::process() processes each tick & dispatches HTTP clients to push data out as necessary
 
     // Check & send to Fermentrack if necessary
-    if(send_to_fermentrack_at <= xTaskGetTickCount()) {
+    if(send_to_fermentrack_at <= millis()) {
         if(WiFi.status()== WL_CONNECTED && app_config.config["fermentrackURL"].get<std::string>().length() > 12) {   //Check WiFi connection status
 #ifdef DEBUG_PRINTS
             Serial.printf("Calling send to Fermentrack\r\n");
@@ -350,38 +350,38 @@ void dataSendHandler::process() {
             // tilt_scanner.wait_until_scan_complete();
             send_to_fermentrack();
         }
-        send_to_fermentrack_at = xTaskGetTickCount() + (app_config.config["fermentrackPushEvery"].get<int>() * 1000);
+        send_to_fermentrack_at = millis() + (app_config.config["fermentrackPushEvery"].get<int>() * 1000);
         yield();
     }
 
     // Check & send to Google Scripts if necessary
-    if(send_to_google_at <= xTaskGetTickCount()) {
+    if(send_to_google_at <= millis()) {
         if(WiFi.status()== WL_CONNECTED && app_config.config["scriptsURL"].get<std::string>().length() > 12) {
 #ifdef DEBUG_PRINTS
             Serial.printf("Calling send to Google\r\n");
 #endif
             // tilt_scanner.wait_until_scan_complete();
             send_to_google();
-            send_to_google_at = xTaskGetTickCount() + GSCRIPTS_DELAY;
+            send_to_google_at = millis() + GSCRIPTS_DELAY;
         } else {
             // If the user adds the setting, we want this to kick in within 15 seconds
-            send_to_google_at = xTaskGetTickCount() + 15000;
+            send_to_google_at = millis() + 15000;
         }
         yield();
     }
 
     // Check & send to Brewers Friend if necessary
-    if(send_to_brewers_friend_at <= xTaskGetTickCount()) {
+    if(send_to_brewers_friend_at <= millis()) {
         if(WiFi.status()== WL_CONNECTED && app_config.config["brewersFriendKey"].get<std::string>().length() > 12) {
 #ifdef DEBUG_PRINTS
             Serial.printf("Calling send to Brewers Friend\r\n");
 #endif
             // tilt_scanner.wait_until_scan_complete();
             send_to_brewers_friend();
-            send_to_brewers_friend_at = xTaskGetTickCount() + BREWERS_FRIEND_DELAY;
+            send_to_brewers_friend_at = millis() + BREWERS_FRIEND_DELAY;
         } else {
             // If the user adds the setting, we want this to kick in within 15 seconds
-            send_to_brewers_friend_at = xTaskGetTickCount() + 15000;
+            send_to_brewers_friend_at = millis() + 15000;
         }
         yield();
     }
